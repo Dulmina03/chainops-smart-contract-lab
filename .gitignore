@@ -1,0 +1,28 @@
+# Node dependencies and generated Hardhat outputs
+**/node_modules/
+**/cache/
+**/artifacts/
+**/coverage/
+**/typechain-types/
+**/dist/
+**/.next/
+
+# Secrets and local data: NEVER commit private keys, keystores, recovery phrases
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.secret
+**/keystore.json
+**/.wallet*/
+**/wallet-backup*/
+
+# Editors / OS
+.vscode/settings.json
+.idea/
+.DS_Store
+Thumbs.db
+
+# Note: review Hardhat Ignition deployment records before committing.
+# Some are useful for deployment traceability; never commit secrets.
