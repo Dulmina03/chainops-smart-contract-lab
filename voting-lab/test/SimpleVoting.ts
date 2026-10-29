@@ -58,4 +58,17 @@ it("rejects a second vote from the same account", async function () {
   assert.equal(await voting.read.voteCounts([0n]), 1n);
   assert.equal(await voting.read.voteCounts([1n]), 0n);
 });
+it("allows different accounts to vote for different candidates", async function () {
+  const { viem } = await network.create();
+  const voting = await viem.deployContract("SimpleVoting");
+  const [voterA, voterB] = await viem.getWalletClients();
+
+  await voting.write.vote([0n], { account: voterA.account });
+  assert.equal(await voting.read.voteCounts([0n]), 1n);
+
+  await voting.write.vote([1n], { account: voterB.account });
+
+  assert.equal(await voting.read.voteCounts([0n]), 1n);
+  assert.equal(await voting.read.voteCounts([1n]), 1n);
+});
 });
