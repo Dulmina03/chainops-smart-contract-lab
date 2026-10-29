@@ -20,4 +20,13 @@ describe("SimpleVoting", function () {
     false,
   );
 });
+it("rejects an invalid candidate", async function () {
+  const { viem } = await network.create();
+  const voting = await viem.deployContract("SimpleVoting");
+
+  await viem.assertions.revertWith(
+    voting.write.vote([2n]),
+    "Invalid candidate",
+  );
+});
 });
