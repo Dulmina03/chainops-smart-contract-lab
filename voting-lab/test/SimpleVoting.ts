@@ -29,4 +29,13 @@ it("rejects an invalid candidate", async function () {
     "Invalid candidate",
   );
 });
+it("adds a vote to candidate 0 only", async function () {
+  const { viem } = await network.create();
+  const voting = await viem.deployContract("SimpleVoting");
+
+  await voting.write.vote([0n]);
+
+  assert.equal(await voting.read.voteCounts([0n]), 1n);
+  assert.equal(await voting.read.voteCounts([1n]), 0n);
+});
 });
