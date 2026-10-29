@@ -71,4 +71,16 @@ it("allows different accounts to vote for different candidates", async function 
   assert.equal(await voting.read.voteCounts([0n]), 1n);
   assert.equal(await voting.read.voteCounts([1n]), 1n);
 });
+it("emits VoteCast with the voter and candidate", async function () {
+  const { viem } = await network.create();
+  const voting = await viem.deployContract("SimpleVoting");
+  const [voter] = await viem.getWalletClients();
+
+  await viem.assertions.emitWithArgs(
+    voting.write.vote([0n], { account: voter.account }),
+    voting,
+    "VoteCast",
+    [voter.account.address, 0n],
+  );
+});
 });
