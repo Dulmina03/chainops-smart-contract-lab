@@ -2,5 +2,6 @@
 pragma solidity ^0.8.34;
 
 contract SimpleVoting {
+ mapping(address => bool) public hasVoted;
   uint256[2] public voteCounts;
 }

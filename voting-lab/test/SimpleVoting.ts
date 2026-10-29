@@ -10,4 +10,14 @@ describe("SimpleVoting", function () {
     assert.equal(await voting.read.voteCounts([0n]), 0n);
     assert.equal(await voting.read.voteCounts([1n]), 0n);
   });
+  it("marks a fresh account as not voted", async function () {
+  const { viem } = await network.create();
+  const voting = await viem.deployContract("SimpleVoting");
+  const [voter] = await viem.getWalletClients();
+
+  assert.equal(
+    await voting.read.hasVoted([voter.account.address]),
+    false,
+  );
+});
 });
