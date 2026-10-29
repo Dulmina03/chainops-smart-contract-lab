@@ -38,4 +38,24 @@ it("adds a vote to candidate 0 only", async function () {
   assert.equal(await voting.read.voteCounts([0n]), 1n);
   assert.equal(await voting.read.voteCounts([1n]), 0n);
 });
+it("rejects a second vote from the same account", async function () {
+  const { viem } = await network.create();
+  const voting = await viem.deployContract("SimpleVoting");
+  const [voter] = await viem.getWalletClients();
+
+  await voting.write.vote([0n], { account: voter.account });
+
+  assert.equal(
+    await voting.read.hasVoted([voter.account.address]),
+    true,
+  );
+
+  await viem.assertions.revertWith(
+    voting.write.vote([1n], { account: voter.account }),
+    "Already voted",
+  );
+
+  assert.equal(await voting.read.voteCounts([0n]), 1n);
+  assert.equal(await voting.read.voteCounts([1n]), 0n);
+});
 });

@@ -6,6 +6,9 @@ contract SimpleVoting {
   uint256[2] public voteCounts;
  function vote(uint256 candidateId) external {
   require(candidateId < 2, "Invalid candidate");
+  require(!hasVoted[msg.sender], "Already voted");
+
+  hasVoted[msg.sender] = true;
   voteCounts[candidateId] += 1;
 }
 }
